@@ -8,8 +8,8 @@ env:
   CACHE_KEY: node-deps
   MONGODB_DB_NAME: gha-demo
   MONGODB_CLUSTER_ADDRESS: cluster0.msrhy.mongodb.net
-  MONGODB_USERNAME: Majdi
-  MONGODB_PASSWORD: DLoutFnXU7oEmjko
+  MONGODB_USERNAME: root
+  MONGODB_PASSWORD: exemple
   PORT: 4000
 jobs:
   test:
@@ -17,11 +17,17 @@ jobs:
     container:
       image: node:16
     env:
-      MONGODB_CONNECTION_PROTOCOL: mongodb+srv
-      MONGODB_CLUSTER_ADDRESS: cluster0.msrhy.mongodb.net
-      MONGODB_USERNAME: Majdi
-      MONGODB_PASSWORD: DLoutFnXU7oEmjko
+      MONGODB_CONNECTION_PROTOCOL: mongodb
+      MONGODB_CLUSTER_ADDRESS: mongo
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: exemple
       PORT: 4000
+    services:
+      mongodb:
+        image: mongo
+        env:
+          MONGODB_USERNAME: root
+          MONGODB_PASSWORD: exemple
     steps:
       - name: Get Code
         uses: actions/checkout@v3
@@ -46,7 +52,7 @@ jobs:
       - name: Output information
         env:
           PORT: 3000
-        run: |        
+        run: |
           echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
           echo "MONGODB_USERNAME: $MONGODB_USERNAME"
           echo "${{ env.PORT }}"
